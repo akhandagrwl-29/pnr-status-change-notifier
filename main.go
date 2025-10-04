@@ -176,8 +176,18 @@ func main() {
 			sendEmailAndPushNotification(uri, message, emailList[idx])
 		}
 
+
+		// Load IST timezone
+		loc, err := time.LoadLocation("Asia/Kolkata")
+		if err != nil {
+			fmt.Printf("Error loading IST timezone: %v\n", err)
+			return
+		}
+	
+		// Get current IST time in human-readable format
+		currentTime := time.Now().In(loc).Format("2006-01-02 15:04:05")
 		// save current status
-		fileData := fmt.Sprintf("%s_CacheTime: %s_CheckedAt: %s", currentStatus, resp.Data.PnrResponse.CacheTime, time.Now().Format("2006-01-02 15:04:05"))
+		fileData := fmt.Sprintf("%s_CacheTime: %s_CheckedAt: %s", currentStatus, resp.Data.PnrResponse.CacheTime, currentTime)
 		if err := writePNRData(pnr, fileData); err != nil {
 			fmt.Println(err)
 		}
