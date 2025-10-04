@@ -1,0 +1,34 @@
+name: PNR status change Notifier
+on:
+  repository_dispatch:
+    types: [cron-trigger]
+  workflow_dispatch: # Allows manual trigger for testing
+
+jobs:
+  pnr-status-change-notifier:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.24"
+
+      - name: Run script
+        run: go run main.go
+        env:
+          RECIPIENT_EMAILS: ${{ secrets.RECIPIENT_EMAILS }}
+          PNR_LIST: ${{secrets.PNR_LIST}}
+          NOTIF_SERVICE_PROVIDER: ${{ secrets.NOTIF_SERVICE_PROVIDER }}
+          NOTIF_QUEUES: ${{ secrets.NOTIF_QUEUES }}
+          # Add other secrets as needed
+
+      - name: Commit last updated timestamp and pnr status
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add 2993.txt
+          git diff --quiet && git diff --staged --quiet || git commit -m "Update last email timestamp"
+          git push
