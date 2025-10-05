@@ -1,1 +1,1 @@
-#1->Current: GNWL  18 Berth: 18 Coach: _CacheTime: 2025-10-05T05:00:45.0704509+05:30_CheckedAt: 2025-10-05 05:15:39
+#1->Current: GNWL  18 Berth: 18 Coach: _CacheTime: 0001-01-01T00:00:00_CheckedAt: 2025-10-05 05:30:54
