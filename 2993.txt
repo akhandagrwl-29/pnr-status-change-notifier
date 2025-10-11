@@ -1,1 +1,1 @@
-#1->Current: CNF Berth: 113 Coach: _CacheTime: 0001-01-01T00:00:00_CheckedAt: 2025-10-11 08:30:52
+#1->Current: CNF Berth: 113 Coach: _CacheTime: 2025-10-11T08:30:52.3120982+05:30_CheckedAt: 2025-10-11 08:45:42
