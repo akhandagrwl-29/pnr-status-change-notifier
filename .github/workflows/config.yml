@@ -2,29 +2,37 @@ name: PNR status change Notifier
 on:
   repository_dispatch:
     types: [cron-trigger]
-  workflow_dispatch: # Allows manual trigger for testing
-
+  workflow_dispatch:
+    inputs:
+      dispatch_id:
+        description: An ID used to identify the workflow run
+        required: true
+        type: string
+      wait_time:
+        description: Time to wait before echoing (in seconds)
+        required: true
+        type: string  # Changed from number to string
+      message:
+        description: Message to echo after waiting
+        required: true
+        type: string
 jobs:
   pnr-status-change-notifier:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
       - name: Setup Go
         uses: actions/setup-go@v4
         with:
-          go-version: "1.24"
-
+          go-version: "1.23"  # Changed from 1.24 (not released yet)
       - name: Run script
         run: go run main.go
         env:
           RECIPIENT_EMAILS: ${{ secrets.RECIPIENT_EMAILS }}
-          PNR_LIST: ${{secrets.PNR_LIST}}
+          PNR_LIST: ${{ secrets.PNR_LIST }}
           NOTIF_SERVICE_PROVIDER: ${{ secrets.NOTIF_SERVICE_PROVIDER }}
           NOTIF_QUEUES: ${{ secrets.NOTIF_QUEUES }}
-          # Add other secrets as needed
-
       - name: Commit last updated timestamp and pnr status
         run: |
           git config --local user.email "action@github.com"
@@ -32,3 +40,15 @@ jobs:
           git add *.txt
           git diff --quiet && git diff --staged --quiet || git commit -m "Update last email timestamp"
           git push
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch ${{ inputs.dispatch_id }}
+        run: echo "Dispatch ${{ inputs.dispatch_id }}"
+  wait-and-echo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait
+        run: sleep ${{ inputs.wait_time }}
+      - name: Echo
+        run: echo "${{ inputs.message }}"
