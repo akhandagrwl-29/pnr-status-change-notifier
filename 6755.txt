@@ -1,1 +1,1 @@
-#1->Current: RLWL  28 Berth: 28 Coach: _CacheTime: 0001-01-01T00:00:00_CheckedAt: 2025-11-18 13:05:51
+#1->Current: CNF Berth: 0 Coach: _CacheTime: 0001-01-01T00:00:00_CheckedAt: 2025-11-26 23:34:13
